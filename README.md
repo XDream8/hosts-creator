@@ -14,9 +14,10 @@
 - awk
 - hostname
 ## Usage
-**clone the repository**
+**clone the repository and enter into directory**
 ```sh
 $ git clone https://github.com/XDream8/hosts-creator
+$ cd hosts-creator
 ```
 **make the script executable**
 ```sh
