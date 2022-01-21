@@ -13,3 +13,16 @@
 - curl
 - awk
 - hostname
+## Usage
+**clone the repository**
+```sh
+$ git clone https://github.com/XDream8/hosts-creator
+```
+**make the script executable**
+```sh
+$ chmod +x hosts-creator.sh
+```
+**run the script**
+```sh
+$ ./hosts-creator.sh
+```

@@ -54,7 +54,7 @@ edithostsfile() {
 checksize() {
 	size=$(du -sh "$current_dir/$downloadedhostsfn" | awk '/[MK]/{print $0}')
 	if [ "$(printf '%s\n' "${size}" | awk '/M/{print $0}')" ]; then
-		if [ $(printf '%s\n' "${size}" | awk '{print $0}' | awk '{print ($0+0)}' ) > 60 ]; then
+		if [ "$(printf '%s\n' "${size}" | awk '{print $0}' | awk '{print ($0+0)}')" -gt "60" ]; then
 			printf '%b\n' "${RED}your new hosts file is bigger than 60M${NC}"
 		fi
 	fi
