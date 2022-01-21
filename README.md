@@ -1,6 +1,4 @@
-<p1>
-hosts-creator
-</p1>
+# hosts-creator
 
 ## FEATURES
 - [X] Download and merge multiple host lists
