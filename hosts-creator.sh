@@ -28,7 +28,7 @@ downloadhosts() {
 	n=0 #number
 	printf '%b\n' "${BLUE}Downloading host lists${NC}"
 	for i in \
-		https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts \
+		https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts \
 		https://raw.githubusercontent.com/bkrucarci/turk-adlist/master/hosts \
 		https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt \
 		https://badmojr.github.io/1Hosts/Pro/hosts.txt \
@@ -61,7 +61,9 @@ checksize() {
 }
 
 replacehosts() {
-	if [ "$(command -v doas)" ]; then
+	if [ "$(command -v rdo)" ]; then
+		sudo=rdo
+	elif [ "$(command -v doas)" ]; then
 		sudo=doas
 	else
 		sudo=sudo
