@@ -25,16 +25,13 @@ startupcheck() {
 }
 
 downloadhosts() {
-	n=0 #number
+	# number
+	n=0
 	printf '%b\n' "${BLUE}Downloading host lists${NC}"
 	for i in \
-		https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts \
-		https://raw.githubusercontent.com/bkrucarci/turk-adlist/master/hosts \
-		https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt \
 		https://badmojr.github.io/1Hosts/Pro/hosts.txt \
 		https://hosts.oisd.nl \
 		https://block.energized.pro/ultimate/formats/hosts \
-		https://block.energized.pro/extensions/xtreme/formats/hosts \
 		https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt \
 		https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Hosts/GoodbyeAds.txt
 	do
@@ -48,7 +45,8 @@ edithostsfile() {
 	printf '%b\n' "${BLUE}removing comments, trailingspaces, duplicate lines${NC}"
 	awk -i inplace '!/^#/' $current_dir/$downloadedhostsfn
 	awk -i inplace '{gsub(/^ +| +$/,"")}1' $current_dir/$downloadedhostsfn
-	awk -i inplace '!seen[$0]++' $current_dir/$downloadedhostsfn # duplicate lines
+	# duplicate lines
+	awk -i inplace '!seen[$0]++' $current_dir/$downloadedhostsfn
 }
 
 checksize() {
