@@ -1,0 +1,16 @@
+## remove unneeded lines
+RM_COMMENTS=1
+RM_DUPLICATE_LINES=1
+RM_TRAILING_SPACES=1
+
+## you should probably edit this
+RESOLVE_HOST="127.0.0.1 $(hostname).homenetwork $(hostname) localhost"
+
+## HOSTS
+HOSTS="																																										\
+		https://badmojr.github.io/1Hosts/Pro/hosts.txt																				\
+		https://hosts.oisd.nl																																	\
+		https://block.energized.pro/ultimate/formats/hosts																		\
+		https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt		\
+		https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Hosts/GoodbyeAds.txt			\
+"

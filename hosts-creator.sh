@@ -10,9 +10,12 @@ backupfilename=hosts.backup
 downloadedhostsfn=hosts-new
 downloadprogram=curl
 
+[ -f "$current_dir/config" ] && . $current_dir/config
+
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+GREEN='\033[1;32m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
@@ -28,12 +31,7 @@ downloadhosts() {
 	# number
 	n=0
 	printf '%b\n' "${BLUE}Downloading host lists${NC}"
-	for i in \
-		https://badmojr.github.io/1Hosts/Pro/hosts.txt \
-		https://hosts.oisd.nl \
-		https://block.energized.pro/ultimate/formats/hosts \
-		https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt \
-		https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Hosts/GoodbyeAds.txt
+	for i in $HOSTS
 	do
 		n=$(awk "BEGIN {print $n+1}")
 		printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
@@ -42,11 +40,29 @@ downloadhosts() {
 }
 
 edithostsfile() {
-	printf '%b\n' "${BLUE}removing comments, trailingspaces, duplicate lines${NC}"
-	awk -i inplace '!/^#/' $current_dir/$downloadedhostsfn
-	awk -i inplace '{gsub(/^ +| +$/,"")}1' $current_dir/$downloadedhostsfn
+	# comments
+	if [ $RM_COMMENTS = 1 ]; then
+		printf '%b' "${BLUE}removing comments${NC}"
+		awk -i inplace '!/^#/' $current_dir/$downloadedhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}"
+	fi
+	# trailing spaces
+	if [ $RM_TRAILING_SPACES = 1 ]; then
+		if [ $RM_COMMENTS = 1 ]; then
+			printf '\n%b' "${BLUE}removing trailing spaces${NC}"
+		else
+			printf '%b' "${BLUE}removing trailing spaces${NC}"
+		fi
+		awk -i inplace '{gsub(/^ +| +$/,"")}1' $current_dir/$downloadedhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}"
+	fi
 	# duplicate lines
-	awk -i inplace '!seen[$0]++' $current_dir/$downloadedhostsfn
+	if [ $RM_DUPLICATE_LINES = 1 ]; then
+		if [ $RM_TRAILING_SPACES = 1 ]; then
+			printf '\n%b' "${BLUE}removing duplicate lines${NC}"
+		elif [ $RM_COMMENTS = 0 ] && [ $RM_TRAILING_SPACES = 0 ]; then
+			printf '%b' "${BLUE}removing duplicate lines${NC}"
+		fi
+		awk -i inplace '!seen[$0]++' $current_dir/$downloadedhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}"
+	fi
 }
 
 checksize() {
@@ -67,7 +83,7 @@ replacehosts() {
 		sudo=sudo
 	fi
 
-	printf '%b\n' "${BLUE}replacing /etc/hosts with the new one${NC}"
+	printf '\n%b\n' "${BLUE}replacing /etc/hosts with the new one${NC}"
 	printf '%b' "${YELLOW}"
 	$sudo mv -iv $current_dir/$downloadedhostsfn $syshosts_file || printf '%b\n' "${RED}error: couldn't replace /etc/hosts with the new hosts file";exit 1
 	printf '%b' "${NC}"
@@ -76,8 +92,7 @@ replacehosts() {
 main() {
 	startupcheck
 
-	# You should edit this line probably
-	printf '%b\n' "127.0.0.1 $(hostname).homenetwork $(hostname) localhost" > $current_dir/$downloadedhostsfn
+	printf '%s\n' "$RESOLVE_HOST" > $current_dir/$downloadedhostsfn
 
 	downloadhosts
 	edithostsfile
