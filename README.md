@@ -21,10 +21,6 @@
 $ git clone https://github.com/XDream8/hosts-creator
 $ cd hosts-creator
 ```
-**make the script executable**
-```sh
-$ chmod +x hosts-creator.sh
-```
 **edit the configuration with your favourite editor**
 ```sh
 $ nvim config
