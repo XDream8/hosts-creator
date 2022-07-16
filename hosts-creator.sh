@@ -51,7 +51,7 @@ edithostsfile() {
 	# comments
 	if [ $RM_COMMENTS = 1 ]; then
 		printf '%b' "${BLUE}removing comments${NC}"
-		awk -i inplace '!/^#/' $current_dir/$newhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}"
+		awk '!/^#/' $current_dir/$newhostsfn > tmp && ( mv -f tmp $current_dir/$newhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}" )
 	fi
 	# trailing spaces
 	if [ $RM_TRAILING_SPACES = 1 ]; then
@@ -60,7 +60,7 @@ edithostsfile() {
 		else
 			printf '%b' "${BLUE}removing trailing spaces${NC}"
 		fi
-		awk -i inplace '{gsub(/^ +| +$/,"")}1' $current_dir/$newhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}"
+		awk '{gsub(/^ +| +$/,"")}1' $current_dir/$newhostsfn > tmp && ( mv -f tmp $current_dir/$newhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}" )
 	fi
 	# duplicate lines
 	if [ $RM_DUPLICATE_LINES = 1 ]; then
@@ -69,7 +69,7 @@ edithostsfile() {
 		elif [ $RM_COMMENTS = 0 ] && [ $RM_TRAILING_SPACES = 0 ]; then
 			printf '%b' "${BLUE}removing duplicate lines${NC}"
 		fi
-		awk -i inplace '!seen[$0]++' $current_dir/$newhostsfn && printf '%b' "${BLUE}: ${GREEN}done${NC}"
+		awk '!seen[$0]++' $current_dir/$newhostsfn > tmp && ( mv -f tmp $current_dir/$newhostsfn && printf '%b\n' "${BLUE}: ${GREEN}done${NC}" )
 	fi
 }
 
