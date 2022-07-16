@@ -27,7 +27,7 @@ $ chmod +x hosts-creator.sh
 ```
 **edit the configuration with your favourite editor**
 ```sh
-nvim config
+$ nvim config
 ```
 **run the script**
 ```sh
