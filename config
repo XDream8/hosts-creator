@@ -3,7 +3,7 @@ syshosts_file=/etc/hosts
 backupfilename=hosts
 newhostsfn=hosts-new
 downloader=curl
-replacehosts=0
+replacehosts=1
 
 ## remove unneeded lines
 RM_COMMENTS=1
